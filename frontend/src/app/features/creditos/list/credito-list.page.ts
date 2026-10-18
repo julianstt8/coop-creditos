@@ -27,19 +27,13 @@ import { CreditosService } from '../../../core/services/creditos.service';
         </div>
       </div>
 
-      <!-- Alerta de Éxito / Error -->
       @if (successMessage()) {
-        <div class="alert alert-success">
-          {{ successMessage() }}
-        </div>
+        <div class="alert alert-success">{{ successMessage() }}</div>
       }
       @if (errorMessage()) {
-        <div class="alert alert-error">
-          {{ errorMessage() }}
-        </div>
+        <div class="alert alert-error">{{ errorMessage() }}</div>
       }
 
-      <!-- Filtros y Búsqueda -->
       <div class="card filters-card">
         <div class="filters-row">
           <div class="filter-item search-box">
@@ -49,25 +43,14 @@ import { CreditosService } from '../../../core/services/creditos.service';
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <input
-                id="search-input"
-                type="text"
-                class="form-control with-icon"
+              <input id="search-input" type="text" class="form-control with-icon"
                 placeholder="Número de crédito, cédula o nombre del asociado..."
-                [(ngModel)]="searchTerm"
-                (ngModelChange)="onSearchChange()"
-              />
+                [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" />
             </div>
           </div>
-
           <div class="filter-item">
             <label class="form-label" for="filter-estado">Filtrar por Estado</label>
-            <select
-              id="filter-estado"
-              class="form-select"
-              [(ngModel)]="selectedEstado"
-              (ngModelChange)="onFilterChange()"
-            >
+            <select id="filter-estado" class="form-select" [(ngModel)]="selectedEstado" (ngModelChange)="onFilterChange()">
               <option value="">Todos los estados</option>
               <option value="SOLICITADO">Solicitado</option>
               <option value="EN_ESTUDIO">En Estudio</option>
@@ -77,98 +60,83 @@ import { CreditosService } from '../../../core/services/creditos.service';
               <option value="CANCELADO">Cancelado</option>
             </select>
           </div>
-
           <div class="filter-item">
             <label class="form-label" for="filter-sort">Ordenar por</label>
-            <select
-              id="filter-sort"
-              class="form-select"
-              [(ngModel)]="sortBy"
-              (ngModelChange)="onFilterChange()"
-            >
+            <select id="filter-sort" class="form-select" [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()">
               <option value="fechaSolicitud">Fecha de radicación (recientes primero)</option>
               <option value="valorSolicitado">Monto solicitado</option>
               <option value="numeroCredito">Número de crédito</option>
-              <option value="estado">Estado del crédito</option>
+              <option value="estado">Estado del credito</option>
             </select>
           </div>
         </div>
       </div>
 
-      <!-- Tabla de Créditos -->
-      <div class="card" style="margin-top: 20px;">
+      <div class="card table-card">
         @if (loading()) {
-          <div style="padding: 40px; text-align: center; color: var(--color-text-muted);">
-            Consultando solicitudes de crédito...
-          </div>
+          <div class="loading-state">Consultando solicitudes de crédito...</div>
         } @else if (creditos().length === 0) {
-          <div style="padding: 50px 20px; text-align: center;">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" style="margin-bottom: 12px;">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
               <line x1="9" y1="15" x2="15" y2="15"></line>
             </svg>
-            <h3 style="margin: 0; color: var(--color-text);">No se encontraron solicitudes registradas</h3>
-            <p style="margin: 6px 0 16px 0; color: var(--color-text-muted); font-size: 0.9rem;">
-              Prueba cambiando los filtros de búsqueda o radica una nueva solicitud.
-            </p>
+            <h3>No se encontraron solicitudes registradas</h3>
+            <p>Prueba cambiando los filtros de búsqueda o radica una nueva solicitud.</p>
             <a routerLink="/creditos/nuevo" class="btn btn-outline btn-sm">Radicar Nueva Solicitud</a>
           </div>
         } @else {
-          <div class="table-responsive">
-            <table class="data-table">
+          <div class="table-wrapper">
+            <table class="data-table compact-table">
+              <colgroup>
+                <col class="col-num">
+                <col class="col-asociado">
+                <col class="col-linea">
+                <col class="col-monto">
+                <col class="col-plazo">
+                <col class="col-estado">
+                <col class="col-fecha">
+                <col class="col-acciones">
+              </colgroup>
               <thead>
                 <tr>
                   <th>No. Crédito</th>
-                  <th>Asociado Titular</th>
-                  <th>Línea de Crédito</th>
-                  <th>Monto Solicitado</th>
-                  <th>Plazo y Forma de Pago</th>
+                  <th>Asociado</th>
+                  <th>Línea</th>
+                  <th>Monto</th>
+                  <th>Plazo / Pago</th>
                   <th>Estado</th>
-                  <th>Fecha Radicación</th>
-                  <th style="text-align: right;">Acciones</th>
+                  <th>Radicación</th>
+                  <th class="th-center">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 @for (c of creditos(); track c.id) {
                   <tr>
                     <td>
-                      <a [routerLink]="['/creditos', c.id]" class="font-mono font-bold" style="font-weight: 700;">
-                        {{ c.numeroCredito }}
-                      </a>
+                      <a [routerLink]="['/creditos', c.id]" class="credit-num-link">{{ c.numeroCredito }}</a>
                     </td>
                     <td>
-                      <div style="font-weight: 600;">{{ c.nombreAsociado }}</div>
-                      <div style="font-size: 0.78rem; color: var(--color-text-muted); font-family: var(--font-mono);">
-                        Cédula: {{ c.identificacionAsociado }}
-                      </div>
+                      <div class="asociado-nombre">{{ c.nombreAsociado }}</div>
+                      <div class="asociado-cedula">{{ c.identificacionAsociado }}</div>
                     </td>
                     <td>
                       <span class="tipo-label">{{ formatTipo(c.tipoCredito) }}</span>
                     </td>
-                    <td style="font-weight: 700; color: var(--color-text);">
-                      {{ formatCurrency(c.valorSolicitado) }}
-                    </td>
+                    <td class="monto-cell">{{ formatCurrency(c.valorSolicitado) }}</td>
                     <td>
-                      <div style="font-size: 0.85rem;">{{ c.numeroCuotas }} cuotas mensuales</div>
-                      <div style="font-size: 0.75rem; color: var(--color-text-muted);">{{ formatFormaPago(c.formaPago) }}</div>
+                      <div class="plazo-cuotas">{{ c.numeroCuotas }} cuotas</div>
+                      <div class="plazo-forma">{{ formatFormaPago(c.formaPago) }}</div>
                     </td>
                     <td>
                       <span class="badge badge-{{ c.estado.toLowerCase() }}">{{ formatEstado(c.estado) }}</span>
                     </td>
-                    <td style="font-size: 0.82rem; color: var(--color-text-muted);">
-                      {{ formatDate(c.fechaSolicitud) }}
-                    </td>
-                    <td style="text-align: right;">
+                    <td class="fecha-cell">{{ formatDate(c.fechaSolicitud) }}</td>
+                    <td class="td-center">
                       <div class="table-actions">
-                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm">
-                          Ver Detalle
-                        </a>
-                        <button
-                          (click)="confirmDelete(c)"
-                          class="btn btn-outline btn-sm btn-delete"
-                          title="Eliminar crédito (borrado lógico)"
-                        >
+                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm">Detalle</a>
+                        <button (click)="confirmDelete(c)" class="btn btn-outline btn-sm btn-delete" title="Eliminar credito">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -181,26 +149,16 @@ import { CreditosService } from '../../../core/services/creditos.service';
               </tbody>
             </table>
           </div>
-
-          <!-- Paginador -->
           <div class="pagination-footer">
             <span class="pagination-info">
-              Mostrando página <strong>{{ currentPage() }}</strong> de <strong>{{ totalPages() }}</strong>
-              ({{ totalItems() }} solicitudes en total)
+              Página <strong>{{ currentPage() }}</strong> de <strong>{{ totalPages() }}</strong>
+              · {{ totalItems() }} solicitudes
             </span>
             <div class="pagination-controls">
-              <button
-                class="btn btn-outline btn-sm"
-                [disabled]="currentPage() <= 1"
-                (click)="goToPage(currentPage() - 1)"
-              >
+              <button class="btn btn-outline btn-sm" [disabled]="currentPage() <= 1" (click)="goToPage(currentPage() - 1)">
                 ← Anterior
               </button>
-              <button
-                class="btn btn-outline btn-sm"
-                [disabled]="currentPage() >= totalPages()"
-                (click)="goToPage(currentPage() + 1)"
-              >
+              <button class="btn btn-outline btn-sm" [disabled]="currentPage() >= totalPages()" (click)="goToPage(currentPage() + 1)">
                 Siguiente →
               </button>
             </div>
@@ -209,85 +167,58 @@ import { CreditosService } from '../../../core/services/creditos.service';
       </div>
     </div>
   `,
-  styles: [
-    `
-      .filters-card {
-        padding: 16px 20px;
-      }
+  styles: [`
+    .filters-card { padding: 16px 20px; }
+    .filters-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; }
+    .filter-item { flex: 1 1 200px; }
+    .filter-item.search-box { flex: 2 1 320px; }
+    .input-icon-wrapper { position: relative; display: flex; align-items: center; }
+    .input-icon { position: absolute; left: 12px; color: var(--color-text-muted); pointer-events: none; }
+    .form-control.with-icon { padding-left: 36px; }
 
-      .filters-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        gap: 16px;
-      }
+    .loading-state { padding: 40px; text-align: center; color: var(--color-text-muted); }
+    .empty-state { padding: 50px 20px; text-align: center; }
+    .empty-state h3 { margin: 12px 0 6px; color: var(--color-text); }
+    .empty-state p { margin: 0 0 16px; color: var(--color-text-muted); font-size: 0.9rem; }
 
-      .filter-item {
-        flex: 1 1 200px;
-      }
+    .table-card { margin-top: 20px; padding: 0; overflow: hidden; }
+    .table-wrapper { width: 100%; overflow-x: auto; }
 
-      .filter-item.search-box {
-        flex: 2 1 320px;
-      }
+    .compact-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.81rem; }
+    .compact-table th { padding: 10px 8px; font-size: 0.73rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .compact-table td { padding: 9px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
 
-      .input-icon-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
+    col.col-num      { width: 106px; }
+    col.col-asociado { width: 18%;   }
+    col.col-linea    { width: 10%;   }
+    col.col-monto    { width: 110px; }
+    col.col-plazo    { width: 105px; }
+    col.col-estado   { width: 104px; }
+    col.col-fecha    { width: 86px;  }
+    col.col-acciones { width: 106px; }
 
-      .input-icon {
-        position: absolute;
-        left: 12px;
-        color: var(--color-text-muted);
-        pointer-events: none;
-      }
+    .th-center, .td-center { text-align: center; }
 
-      .form-control.with-icon {
-        padding-left: 36px;
-      }
+    .credit-num-link { font-family: var(--font-mono); font-weight: 700; font-size: 0.79rem; text-decoration: none; color: var(--color-primary); white-space: nowrap; }
+    .credit-num-link:hover { text-decoration: underline; }
 
-      .tipo-label {
-        font-size: 0.82rem;
-        background: #f1f5f9;
-        padding: 3px 8px;
-        border-radius: var(--radius-sm);
-        color: var(--color-text-secondary);
-        font-weight: 500;
-      }
+    .asociado-nombre { font-weight: 600; font-size: 0.81rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .asociado-cedula { font-size: 0.7rem; color: var(--color-text-muted); font-family: var(--font-mono); white-space: nowrap; }
 
-      .table-actions {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
+    .tipo-label { font-size: 0.7rem; background: #f1f5f9; padding: 2px 6px; border-radius: var(--radius-sm); color: var(--color-text-secondary); font-weight: 500; white-space: nowrap; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
-      .btn-delete:hover {
-        color: #ef4444;
-        border-color: #fca5a5;
-        background: #fef2f2;
-      }
+    .monto-cell { font-weight: 700; color: var(--color-text); white-space: nowrap; font-size: 0.81rem; }
+    .plazo-cuotas { font-size: 0.79rem; white-space: nowrap; }
+    .plazo-forma { font-size: 0.69rem; color: var(--color-text-muted); white-space: nowrap; }
+    .fecha-cell { font-size: 0.76rem; color: var(--color-text-muted); white-space: nowrap; }
 
-      .pagination-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 14px 20px;
-        border-top: 1px solid var(--color-border);
-        background: #fafafa;
-        font-size: 0.85rem;
-      }
+    .table-actions { display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
+    .btn-delete:hover { color: #ef4444; border-color: #fca5a5; background: #fef2f2; }
 
-      .pagination-info {
-        color: var(--color-text-muted);
-      }
-
-      .pagination-controls {
-        display: flex;
-        gap: 8px;
-      }
-    `,
-  ],
+    .pagination-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--color-border); background: #fafafa; font-size: 0.82rem; }
+    .pagination-info { color: var(--color-text-muted); }
+    .pagination-controls { display: flex; gap: 8px; }
+  `],
 })
 export class CreditoListPage implements OnInit {
   private readonly creditosService = inject(CreditosService);
@@ -339,27 +270,15 @@ export class CreditoListPage implements OnInit {
       });
   }
 
-  onSearchChange(): void {
-    this.currentPage.set(1);
-    this.loadCreditos();
-  }
-
-  onFilterChange(): void {
-    this.currentPage.set(1);
-    this.loadCreditos();
-  }
-
-  goToPage(page: number): void {
-    this.currentPage.set(page);
-    this.loadCreditos();
-  }
+  onSearchChange(): void { this.currentPage.set(1); this.loadCreditos(); }
+  onFilterChange(): void { this.currentPage.set(1); this.loadCreditos(); }
+  goToPage(page: number): void { this.currentPage.set(page); this.loadCreditos(); }
 
   confirmDelete(credito: Credito): void {
     const confirmed = confirm(
-      `¿Está seguro de eliminar lógicamente el crédito ${credito.numeroCredito} del asociado ${credito.nombreAsociado}?`,
+      `¿Está seguro de eliminar lógicamente el crédito ${credito.numeroCredito} del asociado ${credito.nombreAsociado}?`
     );
     if (!confirmed) return;
-
     this.creditosService.delete(credito.id).subscribe({
       next: () => {
         this.successMessage.set(`Crédito ${credito.numeroCredito} eliminado del sistema.`);
@@ -373,44 +292,31 @@ export class CreditoListPage implements OnInit {
   }
 
   formatCurrency(value: number): string {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      maximumFractionDigits: 0,
-    }).format(value);
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(value);
   }
 
   formatDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return new Intl.DateTimeFormat('es-CO', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
+    return new Intl.DateTimeFormat('es-CO', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(dateStr));
   }
 
   formatTipo(tipo: string): string {
     const map: Record<string, string> = {
-      LIBRE_INVERSION: 'Libre Inversión',
-      VIVIENDA: 'Vivienda',
-      EDUCATIVO: 'Educativo',
-      VEHICULO: 'Vehículo',
-      CALAMIDAD: 'Calamidad',
-      COMERCIAL: 'Comercial Solidario',
+      LIBRE_INVERSION: 'Libre Inversión', VIVIENDA: 'Vivienda', EDUCATIVO: 'Educativo',
+      VEHICULO: 'Vehículo', CALAMIDAD: 'Calamidad', COMERCIAL: 'Comercial Solidario',
     };
     return map[tipo] || tipo.replace(/_/g, ' ');
   }
 
   formatFormaPago(fp: string): string {
-    const map: Record<string, string> = {
-      NOMINA: 'Nómina',
-      DEBITO_AUTOMATICO: 'Débito Automático',
-      VENTANILLA: 'Ventanilla',
-    };
+    const map: Record<string, string> = { NOMINA: 'Nómina', DEBITO_AUTOMATICO: 'Débito Automático', VENTANILLA: 'Ventanilla' };
     return map[fp] || fp.replace(/_/g, ' ');
   }
 
   formatEstado(estado: string): string {
-    return estado.replace(/_/g, ' ');
+    const map: Record<string, string> = {
+      SOLICITADO: 'Solicitado', EN_ESTUDIO: 'En Estudio', APROBADO: 'Aprobado',
+      DESEMBOLSADO: 'Desembolsado', RECHAZADO: 'Rechazado', CANCELADO: 'Cancelado',
+    };
+    return map[estado] || estado.replace(/_/g, ' ');
   }
 }
