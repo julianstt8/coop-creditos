@@ -6,7 +6,9 @@ import { pinoHttp } from 'pino-http';
 import swaggerUi from 'swagger-ui-express';
 import { corsOrigins } from './config/env';
 import { openApiDocument } from './docs/openapi';
+import { creditosRouter } from './modules/creditos/creditos.routes';
 import { healthRouter } from './modules/health/health.routes';
+import { webhookRouter } from './modules/webhooks/webhook.routes';
 import { logger } from './shared/logger';
 import { errorHandler, notFoundHandler } from './shared/middlewares/error-handler';
 
@@ -27,6 +29,8 @@ export function createApp(): Express {
 
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
   app.use('/api/health', healthRouter);
+  app.use('/api/creditos', creditosRouter);
+  app.use('/api/webhooks', webhookRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

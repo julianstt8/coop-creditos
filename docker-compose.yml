@@ -36,7 +36,7 @@ services:
         condition: service_completed_successfully
     environment:
       NODE_ENV: production
-      PORT: 3000
+      PORT: 4000
       CORS_ORIGINS: http://localhost:8080
       DB_HOST: sqlserver
       DB_PORT: 1433
@@ -48,7 +48,7 @@ services:
       WEBHOOK_URL: ${WEBHOOK_URL}
       WEBHOOK_SECRET: ${WEBHOOK_SECRET}
     ports:
-      - "3000:3000"
+      - "4000:4000"
 
   frontend:
     build: ./frontend
