@@ -1,0 +1,17 @@
+<header class="topbar">
+  <span class="brand">OPA Créditos</span>
+  <nav aria-label="Navegación principal">
+    <a routerLink="/dashboard" routerLinkActive="active" ariaCurrentWhenActive="page">Dashboard</a>
+    <a
+      routerLink="/creditos"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ariaCurrentWhenActive="page"
+      >Créditos</a
+    >
+  </nav>
+</header>
+
+<main class="content">
+  <router-outlet />
+</main>
