@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -8,8 +8,15 @@ import { CreditosService } from '../../../core/services/creditos.service';
 @Component({
   selector: 'app-credito-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, NgStyle, FormsModule, RouterLink],
   template: `
+    <!-- Tooltip global con position:fixed - nunca queda recortado por overflow -->
+    <div class="tooltip-popup"
+         [class.tooltip-visible]="tooltipVisible"
+         [ngStyle]="{ top: tooltipY + 'px', left: tooltipX + 'px' }">
+      {{ tooltipText }}
+      <span class="tooltip-arrow"></span>
+    </div>
     <div class="container animate-fade-in">
       <div class="page-header">
         <div>
@@ -114,29 +121,47 @@ import { CreditosService } from '../../../core/services/creditos.service';
               <tbody>
                 @for (c of creditos(); track c.id) {
                   <tr>
-                    <td [title]="c.numeroCredito">
+                    <td
+                      (mouseenter)="showTooltip($event, c.numeroCredito)"
+                      (mouseleave)="hideTooltip()">
                       <a [routerLink]="['/creditos', c.id]" class="credit-num-link">{{ c.numeroCredito }}</a>
                     </td>
-                    <td [title]="c.nombreAsociado + ' · C.C. ' + c.identificacionAsociado">
+                    <td
+                      (mouseenter)="showTooltip($event, c.nombreAsociado + ' · C.C. ' + c.identificacionAsociado)"
+                      (mouseleave)="hideTooltip()">
                       <div class="asociado-nombre">{{ c.nombreAsociado }}</div>
                       <div class="asociado-cedula">{{ c.identificacionAsociado }}</div>
                     </td>
-                    <td [title]="formatTipo(c.tipoCredito)">
+                    <td
+                      (mouseenter)="showTooltip($event, formatTipo(c.tipoCredito))"
+                      (mouseleave)="hideTooltip()">
                       <span class="tipo-label">{{ formatTipo(c.tipoCredito) }}</span>
                     </td>
-                    <td class="monto-cell" [title]="formatCurrency(c.valorSolicitado)">{{ formatCurrency(c.valorSolicitado) }}</td>
-                    <td [title]="c.numeroCuotas + ' cuotas · ' + formatFormaPago(c.formaPago)">
+                    <td class="monto-cell"
+                      (mouseenter)="showTooltip($event, formatCurrency(c.valorSolicitado))"
+                      (mouseleave)="hideTooltip()">{{ formatCurrency(c.valorSolicitado) }}</td>
+                    <td
+                      (mouseenter)="showTooltip($event, c.numeroCuotas + ' cuotas · ' + formatFormaPago(c.formaPago))"
+                      (mouseleave)="hideTooltip()">
                       <div class="plazo-cuotas">{{ c.numeroCuotas }} cuotas</div>
                       <div class="plazo-forma">{{ formatFormaPago(c.formaPago) }}</div>
                     </td>
-                    <td [title]="formatEstado(c.estado)">
+                    <td
+                      (mouseenter)="showTooltip($event, 'Estado: ' + formatEstado(c.estado))"
+                      (mouseleave)="hideTooltip()">
                       <span class="badge badge-{{ c.estado.toLowerCase() }}">{{ formatEstado(c.estado) }}</span>
                     </td>
-                    <td class="fecha-cell" [title]="formatDate(c.fechaSolicitud)">{{ formatDate(c.fechaSolicitud) }}</td>
+                    <td class="fecha-cell"
+                      (mouseenter)="showTooltip($event, formatDate(c.fechaSolicitud))"
+                      (mouseleave)="hideTooltip()">{{ formatDate(c.fechaSolicitud) }}</td>
                     <td class="td-center">
                       <div class="table-actions">
-                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm" title="Ver detalle del crédito {{ c.numeroCredito }}">Detalle</a>
-                        <button (click)="confirmDelete(c)" class="btn btn-outline btn-sm btn-delete" title="Eliminar crédito {{ c.numeroCredito }}">
+                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm"
+                          (mouseenter)="showTooltip($event, 'Ver detalle: ' + c.numeroCredito)"
+                          (mouseleave)="hideTooltip()">Detalle</a>
+                        <button (click)="confirmDelete(c)" class="btn btn-outline btn-sm btn-delete"
+                          (mouseenter)="showTooltip($event, 'Eliminar: ' + c.numeroCredito)"
+                          (mouseleave)="hideTooltip()">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -186,7 +211,11 @@ import { CreditosService } from '../../../core/services/creditos.service';
 
     .compact-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 0.81rem; }
     .compact-table th { padding: 10px 8px; font-size: 0.73rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .compact-table td { padding: 9px 8px; vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
+    /* overflow:visible en td para que los tooltips (::after) no queden recortados */
+    .compact-table td { padding: 9px 8px; vertical-align: middle; overflow: visible; }
+    /* Elevar la fila al hacer hover para que su tooltip quede por encima de las demás */
+    .compact-table tbody tr { position: relative; z-index: 1; }
+    .compact-table tbody tr:hover { z-index: 20; }
 
     col.col-num      { width: 106px; }
     col.col-asociado { width: 18%;   }
@@ -207,13 +236,44 @@ import { CreditosService } from '../../../core/services/creditos.service';
 
     .tipo-label { font-size: 0.7rem; background: #f1f5f9; padding: 2px 6px; border-radius: var(--radius-sm); color: var(--color-text-secondary); font-weight: 500; white-space: nowrap; display: inline-block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
-    .monto-cell { font-weight: 700; color: var(--color-text); white-space: nowrap; font-size: 0.81rem; }
-    .plazo-cuotas { font-size: 0.79rem; white-space: nowrap; }
+    .monto-cell { font-weight: 700; color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.81rem; }
+    .plazo-cuotas { font-size: 0.79rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .plazo-forma { font-size: 0.69rem; color: var(--color-text-muted); white-space: nowrap; }
-    .fecha-cell { font-size: 0.76rem; color: var(--color-text-muted); white-space: nowrap; }
+    .fecha-cell { font-size: 0.76rem; color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     .table-actions { display: inline-flex; align-items: center; gap: 4px; justify-content: center; }
     .btn-delete:hover { color: #ef4444; border-color: #fca5a5; background: #fef2f2; }
+
+    /* ── Tooltip global (position:fixed, nunca recortado) ── */
+    .tooltip-popup {
+      position: fixed;
+      transform: translateX(-50%) translateY(-100%);
+      margin-top: -10px;
+      background: #1e293b;
+      color: #f8fafc;
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 9999;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      line-height: 1.4;
+    }
+    .tooltip-popup.tooltip-visible {
+      opacity: 1;
+    }
+    .tooltip-arrow {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1e293b;
+    }
 
     .pagination-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--color-border); background: #fafafa; font-size: 0.82rem; }
     .pagination-info { color: var(--color-text-muted); }
@@ -222,6 +282,25 @@ import { CreditosService } from '../../../core/services/creditos.service';
 })
 export class CreditoListPage implements OnInit {
   private readonly creditosService = inject(CreditosService);
+
+  // ── Estado del tooltip global ──
+  tooltipVisible = false;
+  tooltipText = '';
+  tooltipX = 0;
+  tooltipY = 0;
+
+  showTooltip(event: MouseEvent, text: string): void {
+    const el = event.currentTarget as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    this.tooltipText = text;
+    this.tooltipX = rect.left + rect.width / 2;
+    this.tooltipY = rect.top - 6;
+    this.tooltipVisible = true;
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+  }
 
   readonly creditos = signal<Credito[]>([]);
   readonly loading = signal(false);
