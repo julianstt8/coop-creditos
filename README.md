@@ -25,6 +25,15 @@ docker compose up --build
 | API      | http://localhost:4000/api      |
 | Swagger  | http://localhost:4000/api/docs |
 
+> **Nota:** Al iniciar por primera vez, el contenedor `db-init` precarga automáticamente la base de datos con asociados y solicitudes de crédito en diferentes estados para interactuar de inmediato.
+
+---
+
+## Decisiones Técnicas y Arquitectura
+
+Para conocer la justificación sobre el manejo de montos (`DECIMAL` vs. `float`), la inmutabilidad y auditoría, la estrategia del Webhook y el diseño para escalar a 500.000 créditos/mes, consulta:
+👉 **[DECISIONES_TECNICAS.md](DECISIONES_TECNICAS.md)**
+
 ---
 
 ## Desarrollo local
@@ -35,7 +44,7 @@ cp .env.example .env
 docker compose up -d sqlserver db-init
 
 # 2. API  (terminal 1)
-cd backend && npm install && npm run dev    # :3000
+cd backend && npm install && npm run dev    # :4000
 
 # 3. Web  (terminal 2)
 cd frontend && npm install && npm start    # :4200
