@@ -114,29 +114,29 @@ import { CreditosService } from '../../../core/services/creditos.service';
               <tbody>
                 @for (c of creditos(); track c.id) {
                   <tr>
-                    <td>
+                    <td [title]="c.numeroCredito">
                       <a [routerLink]="['/creditos', c.id]" class="credit-num-link">{{ c.numeroCredito }}</a>
                     </td>
-                    <td>
+                    <td [title]="c.nombreAsociado + ' · C.C. ' + c.identificacionAsociado">
                       <div class="asociado-nombre">{{ c.nombreAsociado }}</div>
                       <div class="asociado-cedula">{{ c.identificacionAsociado }}</div>
                     </td>
-                    <td>
+                    <td [title]="formatTipo(c.tipoCredito)">
                       <span class="tipo-label">{{ formatTipo(c.tipoCredito) }}</span>
                     </td>
-                    <td class="monto-cell">{{ formatCurrency(c.valorSolicitado) }}</td>
-                    <td>
+                    <td class="monto-cell" [title]="formatCurrency(c.valorSolicitado)">{{ formatCurrency(c.valorSolicitado) }}</td>
+                    <td [title]="c.numeroCuotas + ' cuotas · ' + formatFormaPago(c.formaPago)">
                       <div class="plazo-cuotas">{{ c.numeroCuotas }} cuotas</div>
                       <div class="plazo-forma">{{ formatFormaPago(c.formaPago) }}</div>
                     </td>
-                    <td>
+                    <td [title]="formatEstado(c.estado)">
                       <span class="badge badge-{{ c.estado.toLowerCase() }}">{{ formatEstado(c.estado) }}</span>
                     </td>
-                    <td class="fecha-cell">{{ formatDate(c.fechaSolicitud) }}</td>
+                    <td class="fecha-cell" [title]="formatDate(c.fechaSolicitud)">{{ formatDate(c.fechaSolicitud) }}</td>
                     <td class="td-center">
                       <div class="table-actions">
-                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm">Detalle</a>
-                        <button (click)="confirmDelete(c)" class="btn btn-outline btn-sm btn-delete" title="Eliminar credito">
+                        <a [routerLink]="['/creditos', c.id]" class="btn btn-outline btn-sm" title="Ver detalle del crédito {{ c.numeroCredito }}">Detalle</a>
+                        <button (click)="confirmDelete(c)" class="btn btn-outline btn-sm btn-delete" title="Eliminar crédito {{ c.numeroCredito }}">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
