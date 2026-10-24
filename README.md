@@ -16,6 +16,21 @@ Implementa estándares bancarios de precisión numérica, máquina de estados de
 
 ---
 
+## 📸 Capturas de la Aplicación
+
+<div align="center">
+  <p><strong>Dashboard Gerencial con KPIs de Cartera en Tiempo Real</strong></p>
+  <img src="docs/screenshots/dashboard.png" alt="Dashboard CoopCréditos" width="90%" />
+  <br/><br/>
+  <p><strong>Administración de Solicitudes con Filtros y Paginación</strong></p>
+  <img src="docs/screenshots/solicitudes.png" alt="Listado de Créditos" width="90%" />
+  <br/><br/>
+  <p><strong>Detalle Integral: Historial de Auditoría Inmutable & Visor de Webhooks</strong></p>
+  <img src="docs/screenshots/detalle_auditoria.png" alt="Detalle del Crédito y Auditoría" width="90%" />
+</div>
+
+---
+
 ## 🏛️ Características Principales
 
 - **Precisión Bancaria Estricta (`DECIMAL(18,2)`):** Elimina cualquier imprecisión de coma flotante binaria en montos y tasas de interés.
@@ -215,8 +230,14 @@ El sistema fue diseñado desde su concepción considerando patrones de crecimien
 3. **Event-Driven Architecture (Kafka / RabbitMQ):** Desacoplamiento de eventos de negocio (evaluación en centrales de riesgo, notificaciones y webhooks) mediante colas asíncronas con reintentos exponenciales y dead-letter queues.
 4. **Capa de Caché de Alto Rendimiento (Redis):** Reducción de hasta un 70% de la carga de base de datos en catálogos y consultas de scoring repetitivas.
 
-Para una explicación exhaustiva de estos patrones y su justificación matemática y técnica, consulta:
-👉 **[DECISIONES_TECNICAS.md](DECISIONES_TECNICAS.md)**
+---
+
+## 📚 Documentación Técnica Detallada
+
+Para una inmersión profunda en la ingeniería detrás del proyecto, consulta los documentos de referencia:
+- 📋 **[Especificación de Requerimientos de Software (SRS)](ESPECIFICACION_REQUERIMIENTOS.md):** Modelo relacional, ciclo de vida de crédito, reglas antifraude y contratos REST.
+- 📐 **[Decisiones Técnicas y Escalabilidad](DECISIONES_TECNICAS.md):** Justificación de precisión bancaria, diseño para escalar a 500k créditos/mes, CQRS, Redis, colas de eventos y multi-tenancy.
+- 💡 **[Explicación de la Solución](EXPLICACION_SOLUCION.md):** Resumen ejecutivo de la arquitectura y flujo funcional.
 
 ---
 
