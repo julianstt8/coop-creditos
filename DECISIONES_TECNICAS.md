@@ -1,6 +1,6 @@
 # Decisiones Técnicas
 
-**Prueba Técnica | CoopCréditos SAS - Módulo de Créditos**
+**Arquitectura de Software y Decisiones de Diseño | CoopCréditos**
 
 ---
 

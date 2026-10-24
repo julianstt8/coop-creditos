@@ -1,0 +1,31 @@
+{
+  "name": "coop-creditos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema Core Transaccional de Créditos para el Sector Financiero Solidario",
+  "scripts": {
+    "test": "npm --prefix backend test",
+    "test:watch": "npm --prefix backend run test:watch",
+    "typecheck": "npm --prefix backend run typecheck",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "format": "npm --prefix backend run format",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "keywords": [
+    "fintech",
+    "financial-system",
+    "credit-management",
+    "angular-20",
+    "nodejs-22",
+    "express-5",
+    "sql-server",
+    "docker",
+    "clean-architecture"
+  ],
+  "author": "Julián Londoño <https://github.com/julianstt8>",
+  "license": "MIT"
+}
