@@ -1,4 +1,4 @@
-# OPA Créditos
+# CoopCréditos
 
 Módulo para administrar solicitudes de crédito del sector financiero solidario.
 

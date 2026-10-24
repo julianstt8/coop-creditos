@@ -243,7 +243,7 @@ import { CreditosService } from '../../../core/services/creditos.service';
                         class="form-control"
                         [(ngModel)]="operatorUser"
                         name="usuario"
-                        placeholder="Ej. analista.credito@opasolidaria.com"
+                        placeholder="Ej. analista.credito@coopcreditos.com"
                         required
                       />
                     </div>
@@ -535,7 +535,7 @@ export class CreditoDetailPage implements OnInit {
   readonly updatingState = signal(false);
 
   selectedNewEstado: CreditoEstado | '' = '';
-  operatorUser = 'analista.credito@opasolidaria.com';
+  operatorUser = 'analista.credito@coopcreditos.com';
   stateObservation = '';
 
   private readonly transitionsMap: Record<CreditoEstado, readonly CreditoEstado[]> = {

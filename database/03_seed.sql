@@ -1,10 +1,10 @@
 /* ============================================================================
    03_seed.sql
-   Datos iniciales y de demostración para OPA SAS (Sector Financiero Solidario)
+   Datos iniciales y de demostración para CoopCréditos SAS (Sector Financiero Solidario)
    Permite validar inmediatamente el Dashboard, Listados y flujo de auditoría.
    ============================================================================ */
 
-USE OpaCreditos;
+USE CoopCreditos;
 GO
 
 -- ----------------------------------------------------------------------------
@@ -81,29 +81,29 @@ BEGIN
     INSERT INTO dbo.HistorialCredito (idCredito, estadoAnterior, estadoNuevo, usuario, observacion, fechaCambio)
     VALUES 
     (2, NULL, 'SOLICITADO', N'PORTAL_ASOCIADO', N'Radicación de crédito educativo', DATEADD(DAY, -5, SYSUTCDATETIME())),
-    (2, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@opasolidaria.com', N'Documentación completa verificada. En análisis de capacidad de pago', DATEADD(DAY, -3, SYSUTCDATETIME()));
+    (2, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@coopcreditos.com', N'Documentación completa verificada. En análisis de capacidad de pago', DATEADD(DAY, -3, SYSUTCDATETIME()));
 
     -- Historial Crédito 3: Radicado, pasado a estudio y aprobado
     INSERT INTO dbo.HistorialCredito (idCredito, estadoAnterior, estadoNuevo, usuario, observacion, fechaCambio)
     VALUES 
     (3, NULL, 'SOLICITADO', N'ASESOR_COMERCIAL', N'Radicación en sucursal principal', DATEADD(DAY, -10, SYSUTCDATETIME())),
-    (3, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@opasolidaria.com', N'Validación en centrales de riesgo favorable (Score 820)', DATEADD(DAY, -7, SYSUTCDATETIME())),
-    (3, 'EN_ESTUDIO', 'APROBADO', N'comite_credito@opasolidaria.com', N'Aprobado en Acta de Comité #2026-42 sin codeudor requerido', DATEADD(DAY, -1, SYSUTCDATETIME()));
+    (3, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@coopcreditos.com', N'Validación en centrales de riesgo favorable (Score 820)', DATEADD(DAY, -7, SYSUTCDATETIME())),
+    (3, 'EN_ESTUDIO', 'APROBADO', N'comite_credito@coopcreditos.com', N'Aprobado en Acta de Comité #2026-42 sin codeudor requerido', DATEADD(DAY, -1, SYSUTCDATETIME()));
 
     -- Historial Crédito 4: Radicado, estudiado y rechazado
     INSERT INTO dbo.HistorialCredito (idCredito, estadoAnterior, estadoNuevo, usuario, observacion, fechaCambio)
     VALUES 
     (4, NULL, 'SOLICITADO', N'PORTAL_ASOCIADO', N'Solicitud libre inversión', DATEADD(DAY, -15, SYSUTCDATETIME())),
-    (4, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@opasolidaria.com', N'Revisión de desprendibles de pago', DATEADD(DAY, -14, SYSUTCDATETIME())),
-    (4, 'EN_ESTUDIO', 'RECHAZADO', N'comite_credito@opasolidaria.com', N'Capacidad de endeudamiento superada (DTI > 50% según política de riesgo)', DATEADD(DAY, -12, SYSUTCDATETIME()));
+    (4, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@coopcreditos.com', N'Revisión de desprendibles de pago', DATEADD(DAY, -14, SYSUTCDATETIME())),
+    (4, 'EN_ESTUDIO', 'RECHAZADO', N'comite_credito@coopcreditos.com', N'Capacidad de endeudamiento superada (DTI > 50% según política de riesgo)', DATEADD(DAY, -12, SYSUTCDATETIME()));
 
     -- Historial Crédito 5: Ciclo completo hasta desembolso
     INSERT INTO dbo.HistorialCredito (idCredito, estadoAnterior, estadoNuevo, usuario, observacion, fechaCambio)
     VALUES 
     (5, NULL, 'SOLICITADO', N'PORTAL_ASOCIADO', N'Solicitud para compra de vivienda de interés social', DATEADD(DAY, -30, SYSUTCDATETIME())),
-    (5, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@opasolidaria.com', N'Estudio de títulos y avalúo comercial aprobados', DATEADD(DAY, -27, SYSUTCDATETIME())),
-    (5, 'EN_ESTUDIO', 'APROBADO', N'comite_credito@opasolidaria.com', N'Aprobación con hipoteca en primer grado', DATEADD(DAY, -24, SYSUTCDATETIME())),
-    (5, 'APROBADO', 'DESEMBOLSADO', N'tesoreria@opasolidaria.com', N'Transferencia electrónica ACH efectuada a cuenta del constructor', DATEADD(DAY, -20, SYSUTCDATETIME()));
+    (5, 'SOLICITADO', 'EN_ESTUDIO', N'analista_credito@coopcreditos.com', N'Estudio de títulos y avalúo comercial aprobados', DATEADD(DAY, -27, SYSUTCDATETIME())),
+    (5, 'EN_ESTUDIO', 'APROBADO', N'comite_credito@coopcreditos.com', N'Aprobación con hipoteca en primer grado', DATEADD(DAY, -24, SYSUTCDATETIME())),
+    (5, 'APROBADO', 'DESEMBOLSADO', N'tesoreria@coopcreditos.com', N'Transferencia electrónica ACH efectuada a cuenta del constructor', DATEADD(DAY, -20, SYSUTCDATETIME()));
 END
 GO
 

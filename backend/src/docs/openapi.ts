@@ -1,12 +1,12 @@
 export const openApiDocument = {
   openapi: '3.0.3',
   info: {
-    title: 'OPA SAS - Módulo de Créditos API',
+    title: 'CoopCréditos SAS - Módulo de Créditos API',
     version: '1.0.0',
     description:
       'API REST empresarial para la administración, radicación, evaluación y auditoría de solicitudes de crédito de asociados en el sector financiero solidario.',
     contact: {
-      name: 'Equipo de Desarrollo OPA SAS',
+      name: 'Equipo de Desarrollo CoopCréditos SAS',
     },
   },
   servers: [{ url: '/api', description: 'Servidor API' }],
@@ -277,7 +277,7 @@ export const openApiDocument = {
             enum: ['SOLICITADO', 'EN_ESTUDIO', 'APROBADO', 'RECHAZADO', 'DESEMBOLSADO', 'CANCELADO'],
             example: 'EN_ESTUDIO',
           },
-          usuario: { type: 'string', example: 'analista.credito@opasolidaria.com' },
+          usuario: { type: 'string', example: 'analista.credito@coopcreditos.com' },
           observacion: {
             type: 'string',
             example: 'Documentación validada en centrales de riesgo. Capacidad favorable.',

@@ -4,7 +4,7 @@
   "cli": { "packageManager": "npm", "analytics": false },
   "newProjectRoot": "projects",
   "projects": {
-    "opa-creditos-web": {
+    "coop-creditos-web": {
       "projectType": "application",
       "root": "",
       "sourceRoot": "src",
@@ -14,7 +14,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
-            "outputPath": "dist/opa-creditos-web",
+            "outputPath": "dist/coop-creditos-web",
             "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
             "styles": ["src/styles.css"]
@@ -45,8 +45,8 @@
           "builder": "@angular/build:dev-server",
           "options": { "proxyConfig": "proxy.conf.json" },
           "configurations": {
-            "production": { "buildTarget": "opa-creditos-web:build:production" },
-            "development": { "buildTarget": "opa-creditos-web:build:development" }
+            "production": { "buildTarget": "coop-creditos-web:build:production" },
+            "development": { "buildTarget": "coop-creditos-web:build:development" }
           },
           "defaultConfiguration": "development"
         }

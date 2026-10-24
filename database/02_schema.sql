@@ -1,6 +1,6 @@
 /* ============================================================================
    02_schema.sql
-   Módulo de Créditos - OPA SAS (Sector Financiero Solidario)
+   Módulo de Créditos - CoopCréditos SAS (Sector Financiero Solidario)
    
    Justificación del Diseño:
    1. Llaves Primarias y Foráneas:
@@ -25,7 +25,7 @@
       - Se implementa isDeleted BIT en Creditos para retención documental.
    ============================================================================ */
 
-USE OpaCreditos;
+USE CoopCreditos;
 GO
 
 -- ----------------------------------------------------------------------------

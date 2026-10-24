@@ -40,7 +40,7 @@ services:
       CORS_ORIGINS: http://localhost:8080
       DB_HOST: sqlserver
       DB_PORT: 1433
-      DB_NAME: OpaCreditos
+      DB_NAME: CoopCreditos
       DB_USER: sa
       DB_PASSWORD: ${DB_PASSWORD}
       DB_ENCRYPT: "false"

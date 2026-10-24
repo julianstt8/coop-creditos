@@ -1,6 +1,6 @@
 # Decisiones Técnicas
 
-**Prueba Técnica | OPA SAS - Módulo de Créditos**
+**Prueba Técnica | CoopCréditos SAS - Módulo de Créditos**
 
 ---
 
